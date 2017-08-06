@@ -1,7 +1,5 @@
-
 #IMPORTING THE INFO
 import csv
-
 
 stock = [] #1. create empty list called product
 csv_file_path = "data/stock.csv"
@@ -27,10 +25,14 @@ for i in stock:
     i['exp'] = datetime.strptime(i['exp'],"%m/%d/%y")
 for i in stock:
     i['qty'] = int(i['qty'])
+for i in stock:
+    i['material'] = str(i['material'])
 for i in forecast:
     i['date'] = datetime.strptime(i['date'],"%m/%d/%y")
 for i in forecast:
     i['fct'] = int(i['fct'])
+for i in forecast:
+    i['material'] = str(i['material'])
 #TEST CHANGE DATATYPE
 # type_check = forecast[1]["date"]
 # print(type(type_check))
@@ -45,14 +47,16 @@ for i in stock:
     date_exp = i['exp']
     i['thrift'] = date_exp - datetime.timedelta(days=min_code_days)
 
-
 #SORT LIST
 from operator import itemgetter
 
-new_stock = sorted(stock, key=itemgetter('thrift'))
+new_stock1 = sorted(stock, key=itemgetter('thrift'))
+new_forecast1 = sorted(forecast, key=itemgetter('date'))
 #TEST SORT LIST
-print(stock)
-print(new_stock)
+# print(forecast)
+# print(new_forecast1)
+# print(stock)
+# print(new_stock1)
 
 
 
