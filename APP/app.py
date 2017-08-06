@@ -16,8 +16,6 @@ with open(csv_file_path, "r") as csv_file:
         forecast.append(row)
 
 #CHANGE DATATYPE
-# import time
-
 import os
 from datetime import datetime, timedelta
 
@@ -38,18 +36,15 @@ for i in forecast:
 # print(type(type_check))
 
 #CALC THE THIFT DATE
-min_code_wks = input("Enter minimum weeks of code to ship:  ")
+min_code_wks = input("Enter the minimum weeks of code life allowed to ship (suggested values are 6, 7, 8, or 9):  ")
 min_code_days = int(min_code_wks) * 7
-
 import datetime
-
 for i in stock:
     date_exp = i['exp']
     i['thrift'] = date_exp - datetime.timedelta(days=min_code_days)
 
 #SORT LIST
 from operator import itemgetter
-
 new_stock1 = sorted(stock, key=itemgetter('thrift'))
 new_forecast1 = sorted(forecast, key=itemgetter('date'))
 #TEST SORT LIST
@@ -58,7 +53,11 @@ new_forecast1 = sorted(forecast, key=itemgetter('date'))
 # print(stock)
 # print(new_stock1)
 
-
+if len(new_forecast1) == 0:
+    print("No remaining forecast")
+else:
+    date_check = new_forecast1[0]['date']
+    print(date_check)
 
 
 
