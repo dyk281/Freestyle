@@ -64,43 +64,51 @@ for i in new_forecast1:
 
 # CHECK IF THRIFT
 thrift_table = []
-if len(new_forecast1) == 0:
-    print("No remaining forecast")
-else:
-    date_check = new_forecast1[0]['date']
-    for i in new_stock1:
-        i['date_thrifting'] = date_check
-        if i['thrift'] < date_check:
-            thrift_table.append(i)
+def adj_thrift():
+    if len(new_forecast1) == 0:
+        print("No remaining forecast")
+        print("THESE ARE THE ITEMS THRIFTING:")
+        print(thrift_table)
+        print("THESE ARE THE ITEMS IN STOCK STILL:")
+        print(new_stock1)
+    else:
+        date_check = new_forecast1[0]['date']
+        for i in new_stock1:
+            i['date_thrifting'] = date_check
+            if i['thrift'] < date_check:
+                thrift_table.append(i)
+        for v in thrift_table:
+            del_item = next((item for item in new_stock1 if item['id'] == v['id']), None)
+            index_num = new_stock1.index(del_item)
+            new_stock1.pop(index_num)
 
-for v in thrift_table:
-    del_item = next((item for item in new_stock1 if item['id'] == v['id']), None)
-    index_num = new_stock1.index(del_item)
-    new_stock1.pop(index_num)
-# thrift_id = int(thrift_table["id"])
-# print(thrift_id)
+#CALCLUATE
+balance = new_stock1[0]['qty'] - new_forecast1[0]['fct']
 
-# def lookup_product(stock_id, new_stock1):
-#     matching_products = [p for p in new_stock1 if int(p["id"]) == int(product_id)]
-#     return matching_products[0]
-# def destroy_product(products):
-#     product_id = user_inputs_product_id()
-#     try:
-#         product = lookup_product(product_id, products)
-#         del products[products.index(product)]
-#         print("DESTROYING A PRODUCT HERE!")
-#         print(product)
-#         return product
-#     except IndexError as e:
-#         handle_index_error()
+def calc():
+    if balance == 0:
+        del new_forecast1[0]
+        del new_stock1[0]
+    elif balance > 0:
+        del new_forecast1[0]
+        new_stock1[0]['qty'] = balance
+    else:
+        new_forecast1[0]['fct'] = balance * -1
+        del new_stock1[0]
 
+adj_thrift()
+calc()
+
+#TEST
+print("new_forecast1")
+print(new_forecast1)
+print("new_stock1")
+print(new_stock1)
+print("thrift_table")
+print(thrift_table)
 #TEST THRIFT thrift_table
 
-print("THESE ARE THE ITEMS THRIFTING:")
-print(thrift_table)
 
-print("THESE ARE THE ITEMS IN STOCK STILL:")
-print(new_stock1)
 
 
 
