@@ -73,7 +73,10 @@ else:
         if i['thrift'] < date_check:
             thrift_table.append(i)
 
-#             del
+for v in thrift_table:
+    del_item = next((item for item in new_stock1 if item['id'] == v['id']), None)
+    index_num = new_stock1.index(del_item)
+    new_stock1.pop(index_num)
 # thrift_id = int(thrift_table["id"])
 # print(thrift_id)
 
