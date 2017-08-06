@@ -31,7 +31,7 @@ for i in forecast:
     i['date'] = datetime.strptime(i['date'],"%m/%d/%y")
 for i in forecast:
     i['fct'] = int(i['fct'])
-
+#TEST CHANGE DATATYPE
 # type_check = forecast[1]["date"]
 # print(type(type_check))
 
@@ -49,9 +49,10 @@ for i in stock:
 #SORT LIST
 from operator import itemgetter
 
-newstock = sorted(stock, key=itemgetter('thrift'))
-
+new_stock = sorted(stock, key=itemgetter('thrift'))
+#TEST SORT LIST
 print(stock)
+print(new_stock)
 
 
 
