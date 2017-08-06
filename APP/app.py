@@ -53,13 +53,51 @@ new_forecast1 = sorted(forecast, key=itemgetter('date'))
 # print(stock)
 # print(new_stock1)
 
+#INSERT ID/BATCH #
+for i in new_stock1:
+    i['id'] = new_stock1.index(i) + 1
+for i in new_forecast1:
+    i['id'] = new_forecast1.index(i) + 1
+#TEST ADDING ID
+# print(new_stock1)
+# print(new_forecast1)
+
+# CHECK IF THRIFT
+thrift_table = []
 if len(new_forecast1) == 0:
     print("No remaining forecast")
 else:
     date_check = new_forecast1[0]['date']
-    print(date_check)
+    for i in new_stock1:
+        i['date_thrifting'] = date_check
+        if i['thrift'] < date_check:
+            thrift_table.append(i)
 
+#             del
+# thrift_id = int(thrift_table["id"])
+# print(thrift_id)
 
+# def lookup_product(stock_id, new_stock1):
+#     matching_products = [p for p in new_stock1 if int(p["id"]) == int(product_id)]
+#     return matching_products[0]
+# def destroy_product(products):
+#     product_id = user_inputs_product_id()
+#     try:
+#         product = lookup_product(product_id, products)
+#         del products[products.index(product)]
+#         print("DESTROYING A PRODUCT HERE!")
+#         print(product)
+#         return product
+#     except IndexError as e:
+#         handle_index_error()
+
+#TEST THRIFT thrift_table
+
+print("THESE ARE THE ITEMS THRIFTING:")
+print(thrift_table)
+
+print("THESE ARE THE ITEMS IN STOCK STILL:")
+print(new_stock1)
 
 
 
