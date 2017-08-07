@@ -31,6 +31,7 @@ for i in forecast:
     i['fct'] = int(i['fct'])
 for i in forecast:
     i['material'] = str(i['material'])
+
 #TEST CHANGE DATATYPE
 # type_check = forecast[1]["date"]
 # print(type(type_check))
@@ -131,11 +132,14 @@ def calc():
 
 def check_if_thrift():
     if len(thrift_table) == 0:
+        print("------------------------")
         print("No thrift occurred")
+        print("------------------------")
     else:
+        print("------------------------")
         print("Projected thrifted product is:")
         print(thrift_table)
-
+        print("------------------------")
 while len(new_stock1) != 0 and len(new_forecast1) != 0:
     adj_thrift()
     calc()
@@ -159,21 +163,27 @@ while len(new_stock1) != 0 and len(new_forecast1) != 0:
 #     print(thrift_table)
 
 if len(new_stock1) == 0:
+    print("------------------------")
     print("STOCK WAS DEPLETED!")
+    print("------------------------")
     print("Remaining forecasted sales are/is:")
     for p in new_forecast1:
         print("  +", p)
     check_if_thrift()
 elif len(new_forecast1) == 0:
+    print("------------------------")
     print("FORECAST WAS COVERED!")
+    print("------------------------")
     print("Projected Stock Balance is:")
     for p in new_stock1:
         print("  +", p)
     check_if_thrift()
 else:
+    print("------------------------")
     print("Remaining forecasted sales are/is:")
     for p in new_forecast1:
         print("  +", p)
+    print("------------------------")
     print("Projected Stock Balance is:")
     for p in new_stock1:
         print("  +", p)
