@@ -64,28 +64,41 @@ for i in new_forecast1:
 
 # CHECK IF THRIFT
 thrift_table = []
+
 def adj_thrift():
     if len(new_forecast1) == 0:
         print("No remaining forecast")
-        print("THESE ARE THE ITEMS THRIFTING:")
-        print(thrift_table)
-        print("THESE ARE THE ITEMS IN STOCK STILL:")
-        print(new_stock1)
     else:
         date_check = new_forecast1[0]['date']
         for i in new_stock1:
             i['date_thrifting'] = date_check
             if i['thrift'] < date_check:
+                thrift_short_term = []
                 thrift_table.append(i)
-        for v in thrift_table:
-            del_item = next((item for item in new_stock1 if item['id'] == v['id']), None)
-            index_num = new_stock1.index(del_item)
-            new_stock1.pop(index_num)
+                thrift_short_term.append(i)
+                for v in thrift_short_term:
+                    del_item = next((item for item in new_stock1 if item['id'] == v['id']), None)
+                    index_num = new_stock1.index(del_item)
+                    new_stock1.pop(index_num)
+            else:
+                pass
+        # try:
+        # if len(thrift_short_term) == 0:
+        #     pass
+        # else:
+        #     for v in thrift_short_term:
+        #         del_item = next((item for item in new_stock1 if item['id'] == v['id']), None)
+        #         index_num = new_stock1.index(del_item)
+        #         new_stock1.pop(index_num)
+        #         for z in thrift_short_term:
+        #             del z
+
+        # except IndexError as e:
+        #     print("ERROR")
 
 #CALCLUATE
-balance = new_stock1[0]['qty'] - new_forecast1[0]['fct']
-
 def calc():
+    balance = new_stock1[0]['qty'] - new_forecast1[0]['fct']
     if balance == 0:
         del new_forecast1[0]
         del new_stock1[0]
@@ -96,17 +109,88 @@ def calc():
         new_forecast1[0]['fct'] = balance * -1
         del new_stock1[0]
 
-adj_thrift()
-calc()
+def check_if_thrift():
+    if len(thrift_table) == 0:
+        print("No thrift occurred")
+    else:
+        print("Projected thrifted product is:")
+        print(thrift_table)
 
-#TEST
-print("new_forecast1")
-print(new_forecast1)
-print("new_stock1")
-print(new_stock1)
-print("thrift_table")
-print(thrift_table)
-#TEST THRIFT thrift_table
+while len(new_stock1) != 0 and len(new_forecast1) != 0:
+    adj_thrift()
+    calc()
+
+# if len(new_stock1) == 0:
+#     print("STOCK WAS DEPLETED!")
+#     print("Remaining forecasted sales are/is:")
+#     print(new_forecast1)
+#     check_if_thrift()
+# elif len(new_forecast1) == 0:
+#     print("FORECAST WAS COVERED!")
+#     print("Projected Stock Balance is:")
+#     print(new_stock1)
+#     check_if_thrift()
+# else:
+#     print("new_forecast1")
+#     print(new_forecast1)
+#     print("new_stock1")
+#     print(new_stock1)
+#     print("thrift")
+#     print(thrift_table)
+
+if len(new_stock1) == 0:
+    print("STOCK WAS DEPLETED!")
+    print("Remaining forecasted sales are/is:")
+    for p in new_forecast1:
+        print("  +", p)
+    check_if_thrift()
+elif len(new_forecast1) == 0:
+    print("FORECAST WAS COVERED!")
+    print("Projected Stock Balance is:")
+    for p in new_stock1:
+        print("  +", p)
+    check_if_thrift()
+else:
+    print("Remaining forecasted sales are/is:")
+    for p in new_forecast1:
+        print("  +", p)
+    print("Projected Stock Balance is:")
+    for p in new_stock1:
+        print("  +", p)
+    check_if_thrift()
+
+# TEST CALCULATE
+# adj_thrift()
+# calc()
+# adj_thrift()
+# calc()
+# adj_thrift()
+# calc()
+# adj_thrift()
+# calc()
+# adj_thrift()
+# calc()
+# adj_thrift()
+# calc()
+#
+# print("new_forecast1")
+# print(new_forecast1)
+# print("new_stock1")
+# print(new_stock1)
+# print("thrift")
+# print(thrift_table)
+
+#EXPORT CSV FILE
+csv_output_path = "EXPORT/THRIFT.csv"
+dict_list = thrift_table
+
+with open(csv_output_path, 'w') as f:
+    fieldnames = ['material', 'description', 'plant', 'exp', 'qty', 'thrift', 'id', 'date_thrifting']
+    writer = csv.DictWriter(f, fieldnames=fieldnames)
+    writer.writeheader()
+    for p in dict_list: #to loop through each statement
+        writer.writerow(p)
+
 
 
 
