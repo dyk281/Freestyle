@@ -39,18 +39,24 @@ for i in forecast:
 #MESSAGE
 intro = """
 -----------------------------------
-THRIFT CALCULATION APPLICATION
+THRIFT/STOCK CALCULATION APPLICATION
 -----------------------------------
 This database calculates the (1) balance of inventory (stock), (2) forecast/sales balance,
-and (3) the thrift (amount of product that will not sell due to code life).
+and (3) the thrift (amount of product that will not sell due to code life) given the inputs.
 
-The application will stop after either all of the stock is gone or the forecast is covered.
+The application will stop after either (a) all of the stock is gone or (b) the forecast is covered.
+
+Below is the high level desciption of the application:
 
 Part      | DESCRIPTION
 --------- | ------------------
 'Part1'   | Input the forecast and inventory information in the 'DATA' folder (this is prepopulated)
-'Part2'   | The output will display (1) stock balance, (2) forecast balance, and (3) projected thrift.
-'Part3'   | The projected thrift will be exported into a CSV file in the 'EXPORT' folder
+'Part2'   | Enter in the minimum number of weeks of code life desired to sell/send to the stores.
+'Part3'   | The output will display (1) stock balance, (2) forecast balance, and (3) projected thrift.
+'Part4'   | The projected thrift will be exported into a CSV file in the 'EXPORT' folder.
+
+IMPORTANT NOTES:
+*Read the "README" file for header definitions
 
 Enter the minimum weeks of code life balance allowed to ship to the customer.
 Use numerical integer values (examples and suggested values are '6', '7', '8', or '9'):
