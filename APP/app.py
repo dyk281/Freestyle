@@ -35,8 +35,28 @@ for i in forecast:
 # type_check = forecast[1]["date"]
 # print(type(type_check))
 
+#MESSAGE
+intro = """
+-----------------------------------
+THRIFT CALCULATION APPLICATION
+-----------------------------------
+This database calculates the (1) balance of inventory (stock), (2) forecast/sales balance,
+and (3) the thrift (amount of product that will not sell due to code life).
+
+The application will stop after either all of the stock is gone or the forecast is covered.
+
+Part      | DESCRIPTION
+--------- | ------------------
+'Part1'   | Input the forecast and inventory information in the 'DATA' folder (this is prepopulated)
+'Part2'   | The output will display (1) stock balance, (2) forecast balance, and (3) projected thrift.
+'Part3'   | The projected thrift will be exported into a CSV file in the 'EXPORT' folder
+
+Enter the minimum weeks of code life balance allowed to ship to the customer.
+Use numerical integer values (examples and suggested values are '6', '7', '8', or '9'):
+"""
+
 #CALC THE THIFT DATE
-min_code_wks = input("Enter the minimum weeks of code life allowed to ship (suggested values are 6, 7, 8, or 9):  ")
+min_code_wks = input(intro)
 min_code_days = int(min_code_wks) * 7
 import datetime
 for i in stock:
