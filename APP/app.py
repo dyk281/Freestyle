@@ -109,19 +109,6 @@ def adj_thrift():
                     new_stock1.pop(index_num)
             else:
                 pass
-        # try:
-        # if len(thrift_short_term) == 0:
-        #     pass
-        # else:
-        #     for v in thrift_short_term:
-        #         del_item = next((item for item in new_stock1 if item['id'] == v['id']), None)
-        #         index_num = new_stock1.index(del_item)
-        #         new_stock1.pop(index_num)
-        #         for z in thrift_short_term:
-        #             del z
-
-        # except IndexError as e:
-        #     print("ERROR")
 
 #CALCLUATE
 def calc():
@@ -139,12 +126,13 @@ def calc():
 def check_if_thrift():
     if len(thrift_table) == 0:
         print("------------------------")
-        print("No thrift occurred")
+        print("THRIFT: NO THRIFT OCCURRED!  NO THRIFT INFORMATION TO SHARE!")
         print("------------------------")
     else:
         print("------------------------")
-        print("Projected thrifted product is:")
-        print(thrift_table)
+        print("THRIFT: Projected thrifted product is:")
+        for p in thrift_table:
+            print("  +", dict(p))
         print("------------------------")
 while len(new_stock1) != 0 and len(new_forecast1) != 0:
     adj_thrift()
@@ -170,29 +158,32 @@ while len(new_stock1) != 0 and len(new_forecast1) != 0:
 
 if len(new_stock1) == 0:
     print("------------------------")
-    print("STOCK WAS DEPLETED!")
+    print("STOCK: STOCK WAS DEPLETED! NO STOCK INFO TO SHARE!")
     print("------------------------")
-    print("Remaining forecasted sales are/is:")
+    print("FORECAST: Remaining forecasted sales are/is:")
     for p in new_forecast1:
-        print("  +", p)
+        print("  +", dict(p))
+        # print("  +" + " material: " + p['material'] + " description: " + p['description'] + " plant: " + p['plant'] + " date: " + p['date'] + " forecast qty: " + p['qty'])
     check_if_thrift()
 elif len(new_forecast1) == 0:
     print("------------------------")
-    print("FORECAST WAS COVERED!")
+    print("FORECAST: FORECAST WAS COVERED!  NO FORECAST TO SHARE!")
     print("------------------------")
-    print("Projected Stock Balance is:")
+    print("STOCK: Projected Stock Balance is:")
     for p in new_stock1:
-        print("  +", p)
+        print("  +", dict(p))
+        # exp_format = str(p['exp'])
+        # print("  +" + " material: " + p['material'] + " description: " + p['description'] + " plant: " + p['plant'] + " Expiration date: " + exp_format + " Stock qty: " + p['qty'] + " Thrift date: " + p['thrift'])
     check_if_thrift()
 else:
     print("------------------------")
-    print("Remaining forecasted sales are/is:")
+    print("FORECAST: Remaining forecasted sales are/is:")
     for p in new_forecast1:
-        print("  +", p)
+        print("  +", dict(p))
     print("------------------------")
-    print("Projected Stock Balance is:")
+    print("STOCK: Projected Stock Balance is:")
     for p in new_stock1:
-        print("  +", p)
+        print("  +", dict(p))
     check_if_thrift()
 
 # TEST CALCULATE
