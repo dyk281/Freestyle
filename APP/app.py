@@ -38,9 +38,9 @@ for i in forecast:
 
 #MESSAGE
 intro = """
------------------------------------
-THRIFT/STOCK CALCULATION APPLICATION
------------------------------------
+-----------------------------------------------
+THRIFT/STOCK CALCULATION APPLICATION OVERVIEW
+-----------------------------------------------
 This database calculates the (1) balance of inventory (stock), (2) forecast/sales balance,
 and (3) the thrift (amount of product that will not sell due to code life) given the inputs.
 
@@ -50,14 +50,17 @@ Below is the high level desciption of the application:
 
 Part      | DESCRIPTION
 --------- | ------------------
-'Part1'   | Input the forecast and inventory information in the 'DATA' folder (this is prepopulated)
+'Part1'   | Input the forecast and inventory information in the 'DATA' folder (***THIS IS PREPOPULATED***)
 'Part2'   | Enter in the minimum number of weeks of code life desired to sell/send to the stores.
 'Part3'   | The output will display (1) stock balance, (2) forecast balance, and (3) projected thrift.
 'Part4'   | The projected thrift will be exported into a CSV file in the 'EXPORT' folder.
 
-IMPORTANT NOTES:
-*Read the "README" file for header definitions
+IMPORTANT NOTE:
+***Read the "README" file for header definitions***
 
+-----------------------------------
+    INPUT INSTRUCTIONS
+-----------------------------------
 Enter the minimum weeks of code life balance allowed to ship to the customer.
 Use numerical integer values (examples and suggested values are '6', '7', '8', or '9'):
 """
@@ -89,7 +92,8 @@ for i in new_forecast1:
 # print(new_stock1)
 # print(new_forecast1)
 
-# CHECK IF THRIFT
+# FUNCTIONS
+    #CREATE THRIFT TABLE AND CHECKING FOR THRIFT
 thrift_table = []
 
 def adj_thrift():
@@ -109,8 +113,7 @@ def adj_thrift():
                     new_stock1.pop(index_num)
             else:
                 pass
-
-#CALCLUATE
+    #CALC DECISION
 def calc():
     balance = new_stock1[0]['qty'] - new_forecast1[0]['fct']
     if balance == 0:
@@ -123,64 +126,51 @@ def calc():
         new_forecast1[0]['fct'] = balance * -1
         del new_stock1[0]
 
+        #FOR PRINTING THRIFT
 def check_if_thrift():
     if len(thrift_table) == 0:
-        print("------------------------")
+        print("-----------------------------------------------")
         print("THRIFT: NO THRIFT OCCURRED!  NO THRIFT INFORMATION TO SHARE!")
-        print("------------------------")
     else:
-        print("------------------------")
-        print("THRIFT: Projected thrifted product is:")
+        print("-----------------------------------------------")
+        print("THRIFT")
+        print("     Projected thrifted product is:")
         for p in thrift_table:
             print("  +", dict(p))
-        print("------------------------")
+
+#CALCULATE
 while len(new_stock1) != 0 and len(new_forecast1) != 0:
     adj_thrift()
     calc()
 
-# if len(new_stock1) == 0:
-#     print("STOCK WAS DEPLETED!")
-#     print("Remaining forecasted sales are/is:")
-#     print(new_forecast1)
-#     check_if_thrift()
-# elif len(new_forecast1) == 0:
-#     print("FORECAST WAS COVERED!")
-#     print("Projected Stock Balance is:")
-#     print(new_stock1)
-#     check_if_thrift()
-# else:
-#     print("new_forecast1")
-#     print(new_forecast1)
-#     print("new_stock1")
-#     print(new_stock1)
-#     print("thrift")
-#     print(thrift_table)
-
+#RESULTS
 if len(new_stock1) == 0:
-    print("------------------------")
+    print("-----------------------------------------------")
     print("STOCK: STOCK WAS DEPLETED! NO STOCK INFO TO SHARE!")
-    print("------------------------")
-    print("FORECAST: Remaining forecasted sales are/is:")
+    print("-----------------------------------------------")
+    print("FORECAST:")
+    print("     Remaining forecasted sales are/is:")
     for p in new_forecast1:
         print("  +", dict(p))
         # print("  +" + " material: " + p['material'] + " description: " + p['description'] + " plant: " + p['plant'] + " date: " + p['date'] + " forecast qty: " + p['qty'])
     check_if_thrift()
 elif len(new_forecast1) == 0:
-    print("------------------------")
+    print("-----------------------------------------------")
     print("FORECAST: FORECAST WAS COVERED!  NO FORECAST TO SHARE!")
-    print("------------------------")
-    print("STOCK: Projected Stock Balance is:")
+    print("-----------------------------------------------")
+    print("STOCK")
+    print("     Projected Stock Balance is:")
     for p in new_stock1:
         print("  +", dict(p))
         # exp_format = str(p['exp'])
         # print("  +" + " material: " + p['material'] + " description: " + p['description'] + " plant: " + p['plant'] + " Expiration date: " + exp_format + " Stock qty: " + p['qty'] + " Thrift date: " + p['thrift'])
     check_if_thrift()
 else:
-    print("------------------------")
+    print("-----------------------------------------------")
     print("FORECAST: Remaining forecasted sales are/is:")
     for p in new_forecast1:
         print("  +", dict(p))
-    print("------------------------")
+    print("-----------------------------------------------")
     print("STOCK: Projected Stock Balance is:")
     for p in new_stock1:
         print("  +", dict(p))
@@ -218,8 +208,9 @@ with open(csv_output_path, 'w') as f:
     for p in dict_list: #to loop through each statement
         writer.writerow(p)
 
-
-
+print("-----------------------------------------------")
+print("thrift.csv file in 'EXPORT' folder was updated.")
+print("-----------------------------------------------")
 
 
 
