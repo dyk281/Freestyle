@@ -1,5 +1,6 @@
 #IMPORTING THE INFO
 import csv
+import pytest
 
 stock = [] #1. create empty list called product
 csv_file_path = "data/stock.csv"
@@ -32,11 +33,11 @@ for i in forecast:
 for i in forecast:
     i['material'] = str(i['material'])
 
-#TEST CHANGE DATATYPE
+#CHECKING DATATYPE
 # type_check = forecast[1]["date"]
 # print(type(type_check))
 
-#MESSAGE
+#MESSAGE AND TO DETERMINE THRIFT DATE (COMMENT 41-68 FOR PYTEST)
 intro = """
 -----------------------------------------------
 THRIFT/STOCK CALCULATION APPLICATION OVERVIEW
@@ -48,25 +49,27 @@ The application will stop after either (a) all of the stock is gone or (b) the f
 
 Below is the high level desciption of the application:
 
-Part      | DESCRIPTION
---------- | ------------------
-'Part1'   | Input the forecast and inventory information in the 'DATA' folder (***THIS IS PREPOPULATED***)
-'Part2'   | Enter in the minimum number of weeks of code life desired to sell/send to the stores.
-'Part3'   | The output will display (1) stock balance, (2) forecast balance, and (3) projected thrift.
-'Part4'   | The projected thrift will be exported into a CSV file in the 'EXPORT' folder.
+Part                            | DESCRIPTION
+---------------------------     | ------------------
+'Part1: Inputs                  | Inputs are the forecast and inventory/stock in CSV files in the 'DATA' folder
+'Part2: Input(prompted below)   | Enter in the minimum number of weeks of code life required to sell/send to the stores.
+'Part3: Output a display        | The output will display (1) stock balance, (2) forecast balance, and (3) projected thrift.
+'Part4" Output CSV              | The output from Part3 will be written into CSV files in the EXPORT folder.
 
 IMPORTANT NOTE:
-***Read the "README" file for header definitions***
+***Read the "README" file for header definitions and other information (i.e. pytest)***
 
 -----------------------------------
     INPUT INSTRUCTIONS
 -----------------------------------
-Enter the minimum weeks of code life balance allowed to ship to the customer.
-Use numerical integer values (examples and suggested values are '6', '7', '8', or '9'):
+Enter the minimum weeks of code life on a product allowed to ship to the customer.
+Type an integer value (suggested values are 7', '8', or '9'):
 """
-
-#CALC THE THIFT DATE
 min_code_wks = input(intro)
+
+# UNCOMMENT FOR PYTEST AND COMMENT FOR RUN
+# min_code_wks = 7
+
 min_code_days = int(min_code_wks) * 7
 import datetime
 for i in stock:
@@ -92,8 +95,8 @@ for i in new_forecast1:
 # print(new_stock1)
 # print(new_forecast1)
 
-# FUNCTIONS
-    #CREATE THRIFT TABLE AND CHECKING FOR THRIFT
+## FUNCTIONS
+#CREATE THRIFT TABLE AND CHECKING FOR THRIFT
 thrift_table = []
 
 def adj_thrift():
@@ -113,7 +116,7 @@ def adj_thrift():
                     new_stock1.pop(index_num)
             else:
                 pass
-    #CALC DECISION
+#CALC DECISION
 def calc():
     balance = new_stock1[0]['qty'] - new_forecast1[0]['fct']
     if balance == 0:
@@ -126,7 +129,7 @@ def calc():
         new_forecast1[0]['fct'] = balance * -1
         del new_stock1[0]
 
-        #FOR PRINTING THRIFT
+#FOR PRINTING THRIFT
 def check_if_thrift():
     if len(thrift_table) == 0:
         print("-----------------------------------------------")
@@ -176,20 +179,13 @@ else:
         print("  +", dict(p))
     check_if_thrift()
 
+
 # TEST CALCULATE
 # adj_thrift()
 # calc()
 # adj_thrift()
 # calc()
-# adj_thrift()
-# calc()
-# adj_thrift()
-# calc()
-# adj_thrift()
-# calc()
-# adj_thrift()
-# calc()
-#
+
 # print("new_forecast1")
 # print(new_forecast1)
 # print("new_stock1")
@@ -208,13 +204,42 @@ with open(csv_output_path, 'w') as f:
     for p in dict_list: #to loop through each statement
         writer.writerow(p)
 
-print("-----------------------------------------------")
-print("thrift.csv file in 'EXPORT' folder was updated.")
-print("-----------------------------------------------")
+csv_output_path = "EXPORT/FORECAST_BALANCE.csv"
+dict_list = new_forecast1
 
+with open(csv_output_path, 'w') as f:
+    fieldnames = ['material', 'description', 'plant', 'date', 'fct', 'id']
+    writer = csv.DictWriter(f, fieldnames=fieldnames)
+    writer.writeheader()
+    for p in dict_list: #to loop through each statement
+        writer.writerow(p)
 
+csv_output_path = "EXPORT/STOCK_BALANCE.csv"
+dict_list = new_stock1
 
+with open(csv_output_path, 'w') as f:
+    fieldnames = ['material', 'description', 'plant', 'exp', 'qty', 'thrift', 'id']
+    writer = csv.DictWriter(f, fieldnames=fieldnames)
+    writer.writeheader()
+    for p in dict_list: #to loop through each statement
+        writer.writerow(p)
 
+print("-----------------------------------------------------------------------------------------")
+print("THRIFT.CSV, STOCK_BALANCE.CSV, AND FORECAST_BALANCE.CSV ARE UPDATED IN THE 'EXPORT' FOLDER.")
+print("-----------------------------------------------------------------------------------------")
+
+#FOR PYTEST ONLY
+def fct_result():
+    return new_forecast1[0]["fct"]
+
+def test_fct_result():
+    result = fct_result()
+    assert result == 50
+# t_variable = fct_result()
+# print (t_variable)
+
+# if __name__ == "__main__": # "if this script is run from the command-line"
+#     fct_result()
 
 
 
